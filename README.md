@@ -100,6 +100,23 @@ module "insprd" {
   ingress_host = "tf.inspr.dev"
   ingress_class = "nginx"
 }
+
+module "uidp" {
+  depends_on = [ module.tfc, module.insprd ]
+  source = "../terraform-inspr-uidp"
+  providers = {
+    helm = helm.inspr
+  }
+
+  insprd_name = "custominsprd"
+  insprd_init_secret_name = "custominsprd-init-key"
+  insprd_address = "http://custominsprd:80"
+  insprd_token = ""
+
+  namespace = "tfuidp"
+  enable_ingress = false
+}
+
 ```
 
 
